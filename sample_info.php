@@ -1,9 +1,21 @@
+<?php
+	// Start the session
+	session_start();
+	ob_start();
+
+	if (!isset($_SESSION['user']) || $_SESSION['user'] == "") {
+        header("Location: index.php");
+    }
+	// Include the header file at the beginning of the page
+	// include_once '../includes/header.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Initial Sample Information</title>
+	  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
       <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,400i,700,700i" rel="stylesheet">
       <link rel="stylesheet" href="css/main.css">
       <link rel="stylesheet" href="css/datepicker.css">
@@ -16,7 +28,44 @@
       </script>
   </head>
 
+	<style type="text/css">
+		ul, li {
+			display: inline;
+			cursor: pointer;
+			position: relative;
+			top: 8%;
+		}
+		div.common_header {
+			margin-top: 10px;
+			margin-bottom: 20px;
+			position: relative;
+			background-color: #660066;
+			color: white;
+			width: 69%;
+			left: 16%;
+			height: 30px;
+			border-radius: 25px;
+		}
+		a:hover {
+			color: #ffe6ff;
+		}
+	</style>
+
   <body>
+	<div class="common_header">
+		<ul>
+			<li><a id="admin_panel">Admin Panel | </a></li>
+			<li><a id="sample_info">Initial Sample Information | </a></li>
+			<li><a id="dna_extr">DNA Extraction Details | </a></li>
+			<li><a id="geno_qc">Genotyping QC Details | </a></li>
+			<li><a id="client_record">Client Record Card | </a></li>
+			<li><a id="gen_visualizations">Generate Visualizations | </a></li>
+			<li><a id="retreive_barcodes">Retreive Barcodes | </a></li>
+			<li><a id="search_parameters">Search | </a></li>
+			<li><a id="logout">Sign Out</a></li>
+		</ul>
+	</div>
+	<script type="text/javascript" src="javascript/header.js"></script>
 
     <form action="sample_entry.php" method="post">
       <h1>Sample Information Form</h1>
@@ -25,6 +74,7 @@
         <label for="name">Name:</label>
         <input type="text" id="name" name="user_name">
 
+        <!-- <label id="for_mail">The email you entered has some problem.</label>  // was included for testing dynamic validation of email -->
         <label for="mail">Email:</label>
         <input type="email" id="mail" name="user_email">
 
@@ -77,7 +127,8 @@
         <input type="checkbox" id="others" name="pkg_array[]" />
         <b>Others: </b>
         <p id="insertinputs" width="100%">
-        <input type="text" name="others_package" style="width: 300px;;"/>
+        <input type="text" name="others_package" style="width: 300px;"/>
+		</p>
         <br>
       </div>
       </div>
@@ -109,7 +160,7 @@
       });
       </script>
 
-      <br><br><br><br><br><br><br>
+      <br><br><br><br><br><br><br><br>
 
       <label for="source">Source name:</label>
       <select id="source" name="source">

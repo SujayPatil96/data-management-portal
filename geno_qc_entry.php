@@ -6,7 +6,8 @@
 
 <!DOCTYPE html>
 <head>
-	<title>DNA Extraction Details Confirmation</title>
+	<title>Genotyping QC Details Confirmation</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 
 <?php
@@ -33,11 +34,10 @@
         $f260_230 = $_POST["f260_230"];
         $f260_280 = $_POST["f260_280"];
         $concentration = $_POST["conc"];
+		// $dos = $_POST["dos"];
         $doqc = $_POST["doqc"];
 
-		// query to retreive all the barcodes from the central table
-		// Retreive barcodes module has been built on the admin panel
-		$query  = "INSERT INTO dna_extr (";
+		$query  = "INSERT INTO geno_qc (";
     	$query .= "sample_number, barcode, 260_230, 260_280, conc, doqc";
     	$query .= ") VALUES (";
     	$query .= "$sample_number, $barcode, '$f260_230', '$f260_280', '$concentration', '$doqc'";
@@ -49,19 +49,19 @@
 		if ($result) {
 			// Success
 
-			$retreive_dna = "SELECT sample_number, barcode, 260_230, 260_280, conc, doqc FROM dna_extr ";
-			$dna_ret_success = mysqli_query($connection, $retreive_dna);
+			$retreive_geno = "SELECT sample_number, barcode, 260_230, 260_280, conc, doqc FROM geno_qc ";
+			$geno_ret_success = mysqli_query($connection, $retreive_geno);
 
-			if ($dna_ret_success) {
+			if ($geno_ret_success) {
 			echo "<table width='75%'>";
 			echo "<thead><tr><th>Sample Number</th><th>Barcode</th><th>260_230</th><th>260_280</th>";
 			echo "<th>Concentration</th><th>DOQC</th></tr>";
 
-			$row = mysqli_fetch_array($dna_ret_success, MYSQLI_ASSOC);
+			$row = mysqli_fetch_array($geno_ret_success, MYSQLI_ASSOC);
 
 			echo '<tr><td align="center">' . $row['sample_number'] . '</td><td align="left">' . $row['barcode'] . '</td>';
 			echo '<td align="center">' . $row['260_230'] . '</td><td align="left">' . $row['260_280'] . '</td>';
-			echo '<td align="center">' . $row['conc'] . '</td><td align="left">' . $row['doqc'] . '</td>';
+			echo '<td align="center">' . $row['conc'] . '</td><td align="left">' . $row['doqc'] . '</td><tr>';
 			echo "</table>";
 
 			echo "<link href=\"https://fonts.googleapis.com/css?family=Josefin+Sans:400,400i,700,700i\" rel=\"stylesheet\">";
@@ -70,13 +70,14 @@
 			echo "td { text-align: center; }";
 			echo "</style>";
 
-			mysqli_free_result($dna_ret_success);
+			mysqli_free_result($geno_ret_success);
 		} else {
 			// Failure
 			echo "Your query has failed.";
 			printf("Errors: %s\n", mysqli_error($connection));
 			}
 		}
+
 	}
 
     // 3. Close connection to the database

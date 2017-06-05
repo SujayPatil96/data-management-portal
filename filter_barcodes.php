@@ -1,4 +1,20 @@
 <?php
+	// Start the session
+	session_start();
+	ob_start();
+
+	if (!isset($_SESSION['user'])) {
+		header("Location: index.php");
+	}
+?>
+
+<!DOCTYPE html>
+<head>
+	<title>Barcode Retreival Details</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+
+<?php
 	define("DB_SERVER", "localhost");
 	define("DB_USER", "root");
 	define("DB_PASS", "");
@@ -15,7 +31,7 @@
 
     if (isset($_POST['submit'])) {
         // Retreive those barcodes that are present in the initial sample table
-        // but not present in the DNA Extraction table
+        // but not present in the DNA Extraction table and the Genotyping QC table
 
         $query = "SELECT t1.barcode ";
         $query .= "FROM sample_info t1 ";
@@ -32,12 +48,19 @@
             echo "<th>Barcodes left to be sent/delivered:</th>";
 
             // Run through all the records
+			$barcodes = "";
+
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                 echo '<tr><td>' . $row["barcode"] . '</td></tr>';
+				$barcodes .= $row["barcode"] . " | ";
             }
 
             // Close the table
             echo "</table>";
+			echo "<br>";
+			// print_r($barcodes);		this is to get the barcodes concatenated with a "pipe" to make available across all pages
+
+			$_SESSION["barcodes_sent"] = $barcodes;	// Use this SESSION variable to grab this data in the dna_extr.php file
 
             // Add borders to each cell in the table
             // Also add some custom styles
@@ -47,7 +70,7 @@
             echo "td { text-align: center; }";
 			echo "</style>";
         } else {
-            echo "No records remain left to be sent/delivered.";
+            echo "No records remain left to be sent/delivered to the DNA Extraction Lab.";
         }
     }
 

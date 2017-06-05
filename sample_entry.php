@@ -1,4 +1,17 @@
 <?php
+	// Start the session
+	session_start();
+	ob_start();
+?>
+
+
+<!DOCTYPE html>
+<head>
+	<title>Initial Sample Information Confirmation</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+
+<?php
 	define("DB_SERVER", "localhost");
 	define("DB_USER", "root");
 	define("DB_PASS", "");
@@ -91,10 +104,16 @@
         $source = $_POST["source"];
         $reference = $_POST["ref"];
 
+		// Encrypt all the values before putting into the table
+		$enc_name = base64_encode($name) . "$". md5("xcode1");
+		$enc_address = base64_encode($address) . "$". md5("xcode2");
+		$enc_email = base64_encode($email) . "$". md5("xcode3");
+		$enc_phone = base64_encode($phone) . "$". md5("xcode4");
+
         $query  = "INSERT INTO sample_info (";
     	$query .= "barcode, name, source, reference, dor, address, email, phone";
     	$query .= ") VALUES (";
-    	$query .= "$barcode, '$name', '$source', '$reference', '$dor', '$address', '$email', '$phone'";
+    	$query .= "$barcode, '$enc_name', '$source', '$reference', '$dor', '$enc_address', '$enc_email', '$enc_phone'";
     	$query .= ")";
         // echo $query;
 		// echo "<br>";

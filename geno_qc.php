@@ -1,7 +1,6 @@
 <?php
     // Start the session_start
     session_start();
-    ob_start();
 
     if (!isset($_SESSION['user'])) {
         header("Location: index.php");
@@ -27,7 +26,7 @@
 <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>DNA Extraction Details</title>
+      <title>Genotyping QC Details</title>
       <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
       <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,400i,700,700i" rel="stylesheet">
       <link rel="stylesheet" href="css/main.css">
@@ -80,10 +79,10 @@
       </div>
       <script type="text/javascript" src="javascript/header.js"></script>
 
-    <form action="dna_extr_entry.php" method="post">
-      <h1>DNA Extraction Details</h1>
+    <form action="geno_qc_entry.php" method="post">
+      <h1>Genotyping QC Details</h1>
       <fieldset>
-        <legend><span class="number">1</span>Enter DNA Extraction Details</legend>
+        <legend><span class="number">1</span>Genotyping QC Details</legend>
         <label for="sample_number">Sample Number:</label>
         <input type="text" id="sample_number" name="sample_number">
 
@@ -94,11 +93,10 @@
         <select name="barcode" id="barcode">
             <?php
                 session_start();    // Start the session to make the barcodes available
-                ob_start();
 
                 foreach ($barcodes_split as $value) {
                     if (!empty($value)) {
-                        echo "<option value=\"barcode\">" . $value . "</option>";
+                        echo "<option value=" . $value . ">" . $value . "</option>";
                     }
                 }
             ?>
@@ -112,6 +110,9 @@
 
         <label for="conc">Concentration:</label>
         <input type="text" id="conc" name="conc" />
+
+		<!-- <label for="datepicker">Date of Submission:</label>
+		<input type="text" id="datepicker" name="dos" /> -->
 
         <label for="datepicker">Date of QC:</label>
         <input type="text" id="datepicker" name="doqc" />
